@@ -53,7 +53,7 @@ cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 
 cat <<'EOF' > /tmp/startcmd_heredoc
 # run nicotine
-/usr/bin/nicotine
+/usr/local/bin/gluetundl.sh /usr/bin/nicotine
 EOF
 
 # replace startcmd placeholder string with contents of file (here doc)
@@ -69,7 +69,7 @@ rm /tmp/startcmd_heredoc
 cat <<'EOF' > /tmp/menu_heredoc
     <item label="Nicotine+">
     <action name="Execute">
-      <command>/usr/bin/nicotine</command>
+      <command>/usr/local/bin/gluetundl.sh /usr/bin/nicotine</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
