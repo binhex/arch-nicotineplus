@@ -56,7 +56,7 @@ cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 
 cat <<'EOF' > /tmp/startcmd_heredoc
 # run nicotine
-/usr/local/bin/shell/docker/portset.sh --application-name nicotineplus --application-parameters /usr/bin/nicotine
+/usr/local/bin/system/scripts/docker/portset.sh --application-name nicotineplus --application-parameters /usr/bin/nicotine
 EOF
 
 # replace startcmd placeholder string with contents of file (here doc)
@@ -72,7 +72,7 @@ rm /tmp/startcmd_heredoc
 cat <<'EOF' > /tmp/menu_heredoc
     <item label="Nicotine+">
     <action name="Execute">
-      <command>/usr/local/bin/shell/docker/portset.sh --application-name nicotineplus --application-parameters /usr/bin/nicotine</command>
+      <command>/usr/local/bin/system/scripts/docker/portset.sh --application-name nicotineplus --application-parameters /usr/bin/nicotine</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
