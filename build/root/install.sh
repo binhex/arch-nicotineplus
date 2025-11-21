@@ -62,7 +62,7 @@ cp /home/nobody/novnc-16x16.png /usr/share/webapps/novnc/app/images/icons/
 
 cat <<'EOF' > /tmp/startcmd_heredoc
 # run nicotine
-/usr/local/bin/system/scripts/docker/portset.sh --app-parameters /usr/bin/nicotine
+/usr/local/bin/system/scripts/docker/portset.sh --gluetun-incoming-port "${GLUETUN_INCOMING_PORT}" --gluetun-control-server-port "${GLUETUN_CONTROL_SERVER_PORT}" --gluetun-control-server-username "${GLUETUN_CONTROL_SERVER_USERNAME}" --gluetun-control-server-password "${GLUETUN_CONTROL_SERVER_PASSWORD}" --app-parameters /usr/bin/nicotine
 EOF
 
 # replace startcmd placeholder string with contents of file (here doc)
@@ -78,7 +78,7 @@ rm /tmp/startcmd_heredoc
 cat <<'EOF' > /tmp/menu_heredoc
     <item label="Nicotine+">
     <action name="Execute">
-      <command>/usr/local/bin/system/scripts/docker/portset.sh --app-parameters /usr/bin/nicotine</command>
+      <command>/usr/local/bin/system/scripts/docker/portset.sh --gluetun-incoming-port "${GLUETUN_INCOMING_PORT}" --gluetun-control-server-port "${GLUETUN_CONTROL_SERVER_PORT}" --gluetun-control-server-username "${GLUETUN_CONTROL_SERVER_USERNAME}" --gluetun-control-server-password "${GLUETUN_CONTROL_SERVER_PASSWORD}" --app-parameters /usr/bin/nicotine</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
@@ -147,6 +147,38 @@ sed -i '/# PERMISSIONS_PLACEHOLDER/{
 	r /tmp/permissions_heredoc
 }' /usr/bin/init.sh
 rm /tmp/permissions_heredoc
+
+# env vars
+####
+
+cat <<'EOF' > /tmp/envvars_heredoc
+
+# source in utility functions, need process_env_var
+source utils.sh
+
+# Define environment variables to process
+# Format: "VAR_NAME:DEFAULT_VALUE:REQUIRED:MASK"
+env_vars=(
+	"GLUETUN_CONTROL_SERVER_PORT:8000:false:false"
+	"GLUETUN_CONTROL_SERVER_USERNAME::false:false"
+	"GLUETUN_CONTROL_SERVER_PASSWORD::false:true"
+	"GLUETUN_INCOMING_PORT:no:false:false"
+)
+
+# Process each environment variable
+for env_var in "${env_vars[@]}"; do
+	IFS=':' read -r var_name default_value required mask_value <<< "${env_var}"
+	process_env_var "${var_name}" "${default_value}" "${required}" "${mask_value}"
+done
+
+EOF
+
+# replace env vars placeholder string with contents of file (here doc)
+sed -i '/# ENVVARS_PLACEHOLDER/{
+    s/# ENVVARS_PLACEHOLDER//g
+    r /tmp/envvars_heredoc
+}' /usr/bin/init.sh
+rm /tmp/envvars_heredoc
 
 # cleanup
 cleanup.sh
