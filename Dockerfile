@@ -33,10 +33,10 @@ RUN chmod +x /root/*.sh && \
 # ensure internet connectivity, used primarily when sharing network with other containers
 HEALTHCHECK \
 	--interval=2m \
-	--timeout=60s \
+	--timeout=120s \
 	--retries=5 \
 	--start-period=2m \
-  CMD /usr/local/bin/system/scripts/docker/healthcheck.sh || exit 1
+  CMD /usr/local/bin/system/scripts/docker/healthcheck.sh >> /config/healthcheck.log || exit 1
 
 # set permissions
 #################
