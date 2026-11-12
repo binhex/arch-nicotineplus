@@ -145,6 +145,8 @@ env_vars=(
 	"GLUETUN_CONTROL_SERVER_USERNAME::false:false"
 	"GLUETUN_CONTROL_SERVER_PASSWORD::false:true"
 	"GLUETUN_INCOMING_PORT:no:false:false"
+	"ENABLE_STARTUP_SCRIPTS:no:false:false"
+	"STARTUP_SCRIPTS_MODE:wait:false:false"
 )
 
 # Process each environment variable
